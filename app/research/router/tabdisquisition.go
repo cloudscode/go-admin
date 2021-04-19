@@ -10,12 +10,12 @@ import (
     "go-admin/common/middleware"
 )
 
-func init()  {
-	routerCheckRole = append(routerCheckRole, registerTabDisquisitionRouter)
-}
+//func InitRegister()  {
+//    adminRouter.RouterCheckRole = append(adminRouter.RouterCheckRole, RegisterTabDisquisitionRouter)
+//}
 
 // 需认证的路由代码
-func registerTabDisquisitionRouter(v1 *gin.RouterGroup, authMiddleware *jwt.GinJWTMiddleware) {
+func RegisterTabDisquisitionRouter(v1 *gin.RouterGroup, authMiddleware *jwt.GinJWTMiddleware) {
     r := v1.Group("/tabdisquisition").Use(authMiddleware.MiddlewareFunc()).Use(middleware.AuthCheckRole())
     {
         model := &models.TabDisquisition{}
