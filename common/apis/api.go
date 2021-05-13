@@ -17,14 +17,13 @@ type Api struct {
 	Logger  *logger.Logger
 }
 
-func (e Api) SetContext(c *gin.Context) {
+func (e *Api) SetContext(c *gin.Context) {
 	e.Context = c
-	e.Logger = api.GetRequestLogger(c)
 }
 
 // GetLogger 获取上下文提供的日志
 func (e Api) GetLogger() *logger.Logger {
-	return e.Logger
+	return api.GetRequestLogger(e.Context)
 }
 
 func (e Api) Bind(d interface{}, bindings ...binding.Binding) error {

@@ -1,8 +1,8 @@
 package global
 
 const (
-	// go-admin Version Info
-	Version = "1.3.3"
+	// Version go-admin Version Info
+	Version = "1.3.5"
 )
 
 var (
