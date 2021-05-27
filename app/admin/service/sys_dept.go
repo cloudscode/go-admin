@@ -4,6 +4,7 @@ import (
 	"errors"
 	log "github.com/go-admin-team/go-admin-core/logger"
 	"github.com/go-admin-team/go-admin-core/sdk/pkg"
+	"strings"
 
 	"gorm.io/gorm"
 
@@ -73,6 +74,8 @@ func (e *SysDept) InsertSysDept(model *system.SysDept) error {
 	} else {
 		deptPath = "/0" + deptPath
 	}
+	deptPath =  deptPath +"/"
+	deptPath = strings.Replace(deptPath, "//", "/", -1)
 	var mp = map[string]string{}
 	mp["dept_path"] = deptPath
 	if err := e.Orm.Model(&model).Update("dept_path", deptPath).Error; err != nil {

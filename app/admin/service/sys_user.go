@@ -46,7 +46,7 @@ func (e *SysUser) GetSysUser(d cDto.Control, p *actions.DataPermission, model *s
 
 	db := e.Orm.Model(&data).
 		Scopes(
-			actions.Permission(data.TableName(), p),
+			actions.PermissionUser(data.TableName(), p),
 		).
 		First(model, d.GetId())
 	err = db.Error

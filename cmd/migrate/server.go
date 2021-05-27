@@ -16,7 +16,7 @@ import (
 	"github.com/go-admin-team/go-admin-core/sdk/pkg/logger"
 	"go-admin/cmd/migrate/migration"
 	_ "go-admin/cmd/migrate/migration/version"
-	_ "go-admin/cmd/migrate/migration/version-local"
+	//_ "go-admin/cmd/migrate/migration/version-local"
 	"go-admin/common/database"
 	"go-admin/common/models"
 )

@@ -21,15 +21,19 @@ type DataPermission struct {
 }
 
 func PermissionAction() gin.HandlerFunc {
+	println("***********PermissionAction*************-")
 	return func(c *gin.Context) {
 		db, err := pkg.GetOrm(c)
+
 		if err != nil {
+			println("***********PermissionAction*************------error"+user.GetUserIdStr(c))
 			log.Error(err)
 			return
 		}
 
 		msgID := pkg.GenerateMsgIDFromContext(c)
 		var p = new(DataPermission)
+		println("***********PermissionAction*************-------》"+user.GetUserIdStr(c))
 		if userId := user.GetUserIdStr(c); userId != "" {
 			p, err = newDataPermission(db, userId)
 			if err != nil {
@@ -39,6 +43,9 @@ func PermissionAction() gin.HandlerFunc {
 				return
 			}
 		}
+		println("************************-------")
+		println("************************UserId=%s，RoleId=%s,DeptId=%s",p.UserId,p.RoleId,p.DeptId)
+		println("************************-------")
 		c.Set(PermissionKey, p)
 		c.Next()
 	}
@@ -74,7 +81,27 @@ func Permission(tableName string, p *DataPermission) func(db *gorm.DB) *gorm.DB 
 			return db.Where(tableName+".create_by in (SELECT user_id from sys_user where sys_user.dept_id in(select dept_id from sys_dept where dept_path like ? ))", "%/"+pkg.IntToString(p.DeptId)+"/%")
 		case "5":
 			return db.Where(tableName+".create_by = ?", p.UserId)
-		default:
+		default             :
+			return db
+		}
+	}
+}
+
+func PermissionUser(tableName string, p *DataPermission) func(db *gorm.DB) *gorm.DB {
+	return func(db *gorm.DB) *gorm.DB {
+		if !config.ApplicationConfig.EnableDP {
+			return db
+		}
+		switch p.DataScope {
+		case "2":
+			return db.Where(tableName+".user_id in (select sys_user.user_id from sys_role_dept left join sys_user on sys_user.dept_id=sys_role_dept.dept_id where sys_role_dept.role_id = ?)", p.RoleId)
+		case "3":
+			return db.Where(tableName+".create_by in (SELECT user_id from sys_user where dept_id = ? )", p.DeptId)
+		case "4":
+			return db.Where(tableName+".create_by in (SELECT user_id from sys_user where sys_user.dept_id in(select dept_id from sys_dept where dept_path like ? ))", "%/"+pkg.IntToString(p.DeptId)+"/%")
+		//case "5":
+		//	return db.Where(tableName+".create_by = ?", p.UserId)
+		default             :
 			return db
 		}
 	}

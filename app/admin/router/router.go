@@ -5,7 +5,7 @@ import (
 	_ "github.com/gin-gonic/gin"
 	"github.com/go-admin-team/go-admin-core/sdk/pkg/jwtauth"
 	jwt "github.com/go-admin-team/go-admin-core/sdk/pkg/jwtauth"
-	researchrouter "go-admin/app/research/router"
+	//researchrouter "go-admin/app/admin/research/router"
 )
 
 var (
@@ -50,5 +50,5 @@ func examplesCheckRoleRouter(r *gin.Engine, authMiddleware *jwtauth.GinJWTMiddle
 		f(v1, authMiddleware)
 	}
 	//科研成果-论文成果
-	researchrouter.RegisterTabDisquisitionRouter(v1, authMiddleware)
+	//researchrouter.RegisterTabDisquisitionRouter(v1, authMiddleware)
 }
